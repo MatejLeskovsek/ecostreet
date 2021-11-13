@@ -4,7 +4,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-push-gcr:
     name: Build image
     runs-on: ubuntu-latest
 
