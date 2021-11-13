@@ -40,7 +40,7 @@ jobs:
       env:
         GIT_TAG: v0.1.0
       run: |-
-        docker tag $IMAGE_NAME:latest europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME:latest
-        docker tag $IMAGE_NAME:latest europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
-        docker push europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME:latest
-        docker push europe-west3-docker.pkg.dev/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker tag $IMAGE_NAME:latest europe-west3-docker.pkg.dev/$PROJECT_ID/ecostreet/$IMAGE_NAME:latest
+        docker tag $IMAGE_NAME:latest europe-west3-docker.pkg.dev/$PROJECT_ID/ecostreet/$IMAGE_NAME:$GIT_TAG
+        docker push europe-west3-docker.pkg.dev/$PROJECT_ID/ecostreet/$IMAGE_NAME:latest
+        docker push europe-west3-docker.pkg.dev/$PROJECT_ID/ecostreet/$IMAGE_NAME:$GIT_TAG
