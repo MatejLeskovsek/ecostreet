@@ -32,10 +32,10 @@ then
     VNUM1=v$((VNUM1+1))
 elif [[ $VERSION == 'minor' ]]
 then
-    VNUM2=v$((VNUM2+1))
+    VNUM2=$((VNUM2+1))
 elif [[ $VERSION == 'patch' ]]
 then
-    VNUM3=v$((VNUM3+1))
+    VNUM3=$((VNUM3+1))
 else
     echo "No version type or incorrect type specified, try: -v [major, minor, patch]"
     exit 1
