@@ -1,0 +1,46 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "ecostreet"
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "ecostreet-core"
+  namespace: "ecostreet"
+  labels:
+    app: "ecostreet-core"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "ecostreet-core"
+  template:
+    metadata:
+      labels:
+        app: "ecostreet-core"
+    spec:
+      containers:
+      - name: "ecostreet-sha256-1"
+        image: "gcr.io/quiet-era-332013/ecostreet@sha256:6e0371b0f159d1b2f1de237f92480a105a492557006fbabdeb054552f1fdc2e2"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "ecostreet-core-hpa-9qsx"
+  namespace: "ecostreet"
+  labels:
+    app: "ecostreet-core"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "ecostreet-core"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
