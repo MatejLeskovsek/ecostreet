@@ -33,7 +33,3 @@ def login():
         if(data["username"] == 'matej'):
             return "200 OK"
     return(data)
-
-@app.rounte('/test', methods = ['GET'])
-def test():
-    return("200 OK")
