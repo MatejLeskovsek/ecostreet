@@ -202,9 +202,9 @@ metadata:
   name: ecostreet-core-service
   namespace: ecostreet
 spec:
-  clusterIP: 10.0.6.218
+  clusterIP: 10.40.1.15
   clusterIPs:
-    - 10.0.6.218
+    - 10.40.1.15
   externalTrafficPolicy: Cluster
   ports:
     - nodePort: 32673
