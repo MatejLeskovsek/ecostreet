@@ -31,5 +31,5 @@ def login():
     data = request.form
     if(data["username"]):
         if(data["username"] == 'matej'):
-            return "200OK"
+            return "200 OK"
     return(data)
