@@ -34,6 +34,6 @@ def login():
             return "200 OK"
     return(data)
 
-@app.rounte('/login', methods = ['GET'])
+@app.rounte('/test', methods = ['GET'])
 def test():
     return("200 OK")
