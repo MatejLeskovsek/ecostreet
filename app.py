@@ -13,6 +13,11 @@ configuration_core_service = "192.168.1.121"
 @app.route("/")
 def hello_world():
     return "Login microservice."
+
+@app.route("/external")
+def external_test():
+    response = requests.get("http://www.atremic.com/login")
+    return response.text
     
 @app.route('/login', methods = ['POST'])
 def login():
