@@ -43,4 +43,4 @@ def config_update():
 
 @app.route("/getconfig")
 def get_config():
-    return [database_core_service, configuration_core_service]
+    return str([database_core_service, configuration_core_service])
