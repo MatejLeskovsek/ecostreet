@@ -10,27 +10,50 @@ service_ip = "34.159.194.58:5000"
 database_core_service = "34.96.72.77"
 configuration_core_service = "192.168.1.121"
 
+access_token = "None"
+
+# HOME PAGE
 @app.route("/")
 def hello_world():
     return "Login microservice."
 
+# EXTERNAL API CONNECTION
 @app.route("/external")
 def external_test():
     response = requests.get("http://www.atremic.com/login")
     return response.text
     
+# CONNECTION TO ANOTHER MICROSERVICE - AUTHENTICATION MS
 @app.route('/login', methods = ['POST'])
 def login():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
+    global access_token
     
     login_data = request.form
-    url = 'http://' + database_core_service + '/authenticate'
+    url = 'http://' + database_core_service + '/login'
     response = requests.post(url, data=login_data)
+    access_token = response.text
     return response.text
 
+# EXECUTION OF A GAME COMMAND - MOCKUP
+@app.route("/command")
+def game_command():
+    global database_core_service
+    global configuration_core_service
+    global service_ip
+    global service_name
+    global access_token
+    
+    url = 'http://' + database_core_service + '/authenticate'
+    response = requests.post(url, data={"AccessToken": access_token})
+    if(response.text == "200 OK"):
+        return "You have executed a game command."
+    return "401 UNAUTHORIZED"
+
+# SERVICE IP UPDATE FUNCTION
 @app.route("/update_ip", methods = ['POST'])
 def update_ip():
     global database_core_service
@@ -45,6 +68,7 @@ def update_ip():
     response = requests.post(url, data=data)
     return response.text
 
+# FUNCTION TO UPDATE IP'S OF OTHER SERVICES
 @app.route("/config", methods = ['POST'])
 def config_update():
     global database_core_service
@@ -63,6 +87,7 @@ def config_update():
     except Exception as err:
         return err
 
+# FUNCTION TO GET CURRENT CONFIG
 @app.route("/getconfig")
 def get_config():
     global database_core_service
