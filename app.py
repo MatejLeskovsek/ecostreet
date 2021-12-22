@@ -109,16 +109,16 @@ def get_config():
     
     return str([database_core_service, configuration_core_service])
 
-# HEALTH CHECK
-@app.route("/health")
+# METRICS FUNCTION
+@app.route("/metrics")
 def get_health():
-    print("/health accessed")
+    print("/metrics accessed")
     start = datetime.datetime.now()
     try:
         url = 'http://' + configuration_core_service + '/healthcheck'
         response = requests.get(url)
     except Exception as err:
-        return "HEALTH CHECK FAIL: configuration unavailable"
+        return "METRIC CHECK FAIL: configuration unavailable"
     end = datetime.datetime.now()
     
     start2 = datetime.datetime.now()
@@ -126,16 +126,17 @@ def get_health():
         url = 'http://' + database_core_service + '/healthcheck'
         response = requests.get(url)
     except Exception as err:
-        return "HEALTH CHECK FAIL: login service unavailable"
+        return "METRIC CHECK FAIL: login service unavailable"
     end2 = datetime.datetime.now()
     
     delta1 = end-start
     crt = delta1.total_seconds() * 1000
     delta2 = end2-start2
     lrt = delta2.total_seconds() * 1000
-    health = {"health check": "successful", "configuration response time": crt, "authentication response time": lrt}
+    health = {"metric check": "successful", "configuration response time": crt, "authentication response time": lrt}
     return str(health)
 
+# HEALTH CHECK
 @app.route("/healthcheck")
 def send_health():
     print("/healthcheck accessed")
