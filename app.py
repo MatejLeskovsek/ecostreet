@@ -51,7 +51,11 @@ def game_command():
     response = requests.post(url, data={"AccessToken": access_token})
     if(response.text == "200 OK"):
         # additional functionalities could be implemented
-        return "You have executed a game command."
+        try:
+            response = requests.post("http://www.atremic.com/join", data={"gameCode": "9328"})
+        except:
+            response = "200 OK"
+        return "You have successfully joined the game."
     return "401 UNAUTHORIZED"
 
 # SERVICE IP UPDATE FUNCTION
