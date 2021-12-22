@@ -21,6 +21,7 @@ def hello_world():
 # EXTERNAL API CONNECTION
 @app.route("/external")
 def external_test():
+    print("/external accessed")
     response = requests.get("http://www.atremic.com/login")
     return response.text
     
@@ -32,6 +33,7 @@ def login():
     global service_ip
     global service_name
     global access_token
+    print("/login accessed")
     
     login_data = request.form
     url = 'http://' + database_core_service + '/login'
@@ -47,6 +49,7 @@ def game_command():
     global service_ip
     global service_name
     global access_token
+    print("/command accessed")
     
     url = 'http://' + database_core_service + '/authenticate'
     response = requests.post(url, data={"AccessToken": access_token})
@@ -66,6 +69,7 @@ def update_ip():
     global configuration_core_service
     global service_ip
     global service_name
+    print("/update_ip accessed")
     
     
     service_ip = request.form["ip"]
@@ -81,6 +85,7 @@ def config_update():
     global configuration_core_service
     global service_ip
     global service_name
+    print("/config accessed")
     
     try:
         microservice = request.form["name"]
@@ -100,12 +105,14 @@ def get_config():
     global configuration_core_service
     global service_ip
     global service_name
+    print("/getconfig accessed")
     
     return str([database_core_service, configuration_core_service])
 
 # HEALTH CHECK
 @app.route("/health")
 def get_health():
+    print("/health accessed")
     start = datetime.datetime.now()
     try:
         url = 'http://' + configuration_core_service + '/healthcheck'
@@ -131,4 +138,5 @@ def get_health():
 
 @app.route("/healthcheck")
 def send_health():
+    print("/healthcheck accessed")
     return "200 OK"
