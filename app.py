@@ -50,6 +50,7 @@ def game_command():
     url = 'http://' + database_core_service + '/authenticate'
     response = requests.post(url, data={"AccessToken": access_token})
     if(response.text == "200 OK"):
+        # additional functionalities could be implemented
         return "You have executed a game command."
     return "401 UNAUTHORIZED"
 
