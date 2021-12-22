@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 import requests
+import datetime
 
 app = Flask(__name__)
 
@@ -39,7 +40,7 @@ def login():
     return response.text
 
 # EXECUTION OF A GAME COMMAND - MOCKUP
-@app.route("/command")
+@app.route("/command", methods=["POST"])
 def game_command():
     global database_core_service
     global configuration_core_service
@@ -101,3 +102,33 @@ def get_config():
     global service_name
     
     return str([database_core_service, configuration_core_service])
+
+# HEALTH CHECK
+@app.route("/health")
+def get_health():
+    start = datetime.datetime.now()
+    try:
+        url = 'http://' + configuration_core_service + '/healthcheck'
+        response = requests.get(url)
+    except Exception as err:
+        return "HEALTH CHECK FAIL: configuration unavailable"
+    end = datetime.datetime.now()
+    
+    start2 = datetime.datetime.now()
+    try:
+        url = 'http://' + database_core_service + '/healthcheck'
+        response = requests.get(url)
+    except Exception as err:
+        return "HEALTH CHECK FAIL: login service unavailable"
+    end2 = datetime.datetime.now()
+    
+    delta1 = start-end
+    crt = delta1.total_seconds() * 1000
+    delta2 = start2-end2
+    lrt = delta2.total_seconds() * 1000
+    health = {"health check": "successful", "configuration response time": crt, "authentication response time": lrt}
+    return "HEALTH CHECK SUCCESSFUL"
+
+@app.route("/healthcheck")
+def send_health():
+    return "200 OK"
