@@ -16,6 +16,11 @@ def hello_world():
     
 @app.route('/login', methods = ['POST'])
 def login():
+    global database_core_service
+    global configuration_core_service
+    global service_ip
+    global service_name
+    
     login_data = request.form
     url = 'http://' + database_core_service + '/authenticate'
     response = requests.post(url, data=login_data)
@@ -23,6 +28,11 @@ def login():
 
 @app.route("/update_ip")
 def update_ip():
+    global database_core_service
+    global configuration_core_service
+    global service_ip
+    global service_name
+    
     data = {"name": service_name, "ip": service_ip}
     url = 'http://' + configuration_core_service + '/update'
     response = requests.post(url, data=data)
@@ -30,6 +40,11 @@ def update_ip():
 
 @app.route("/config", methods = ['POST'])
 def config_update():
+    global database_core_service
+    global configuration_core_service
+    global service_ip
+    global service_name
+    
     try:
         microservice = request.form["name"]
         ms_ip = request.form["ip"]
@@ -37,11 +52,15 @@ def config_update():
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
             configuration_core_service = ms_ip
-        service_name = "neki_druga"
-        return service_name
+        return "200 OK"
     except Exception as err:
         return err
 
 @app.route("/getconfig")
 def get_config():
-    return str([database_core_service, configuration_core_service, service_name])
+    global database_core_service
+    global configuration_core_service
+    global service_ip
+    global service_name
+    
+    return str([database_core_service, configuration_core_service])
