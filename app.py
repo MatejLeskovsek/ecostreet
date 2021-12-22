@@ -7,8 +7,8 @@ app = Flask(__name__)
 service_name = "ecostreet_core_service"
 service_ip = "34.159.194.58:5000"
 
-database_core_service = "34.96.72.77"
-configuration_core_service = "192.168.1.121"
+database_core_service = "34.159.211.186:5000"
+configuration_core_service = "34.141.19.56:5000"
 
 access_token = "None"
 
