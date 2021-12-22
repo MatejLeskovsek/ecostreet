@@ -31,13 +31,15 @@ def login():
     response = requests.post(url, data=login_data)
     return response.text
 
-@app.route("/update_ip")
+@app.route("/update_ip", methods = ['POST'])
 def update_ip():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
     
+    
+    service_ip = request.form["ip"]
     data = {"name": service_name, "ip": service_ip}
     url = 'http://' + configuration_core_service + '/update'
     response = requests.post(url, data=data)
