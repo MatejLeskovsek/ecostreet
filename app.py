@@ -37,7 +37,7 @@ def config_update():
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
             configuration_core_service = ms_ip
-        return "200 OK"
+        return configuration_core_service
     except Exception as err:
         return err
 
