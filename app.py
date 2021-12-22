@@ -11,6 +11,6 @@ def hello_world():
 @app.route('/login', methods = ['POST'])
 def login():
     login_data = request.form
-    url = 'http://34.102.155.112/authenticate'
+    url = 'http://34.96.72.77/authenticate'
     response = requests.post(url, data=login_data)
     return response.text
