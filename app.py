@@ -16,7 +16,7 @@ access_token = "None"
 # HEALTH PAGE
 @app.route("/")
 def health():
-    return 200
+    return "200"
 
 # HOME PAGE
 @app.route("/lg")
