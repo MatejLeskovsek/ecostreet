@@ -104,7 +104,7 @@ def game_command():
     
     url = 'http://' + database_core_service + '/dbauthenticate'
     response = requests.post(url, data={"AccessToken": request.form["AccessToken"]})
-    if(response.status_code == 200):
+    if(response.status_code == 200 and request.form["GameCode"] == "1337"):
         # additional functionalities could be implemented
         try:
             response = requests.post("http://www.atremic.com/join", data={"gameCode": request.form["GameCode"]})
