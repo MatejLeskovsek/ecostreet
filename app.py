@@ -25,20 +25,20 @@ configuration_core_service = "34.96.72.77"
 
 access_token = "None"
 class NoneSchema(Schema):
-        pass
+    response = fields.Str()
 
 # HEALTH PAGE
 @app.route("/")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def health():
-    return "200", 200
+    return {"response": "200"}, 200
 docs.register(health)
 
 # HOME PAGE
 @app.route("/lg")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def hello_world():
-    return "Login microservice.", 200
+    return {"response": "Login microservice."}, 200
 docs.register(hello_world)
 
 # EXTERNAL API CONNECTION
@@ -49,9 +49,9 @@ def external_test():
     print("/lgexternal accessed")
     try:
         response = requests.get("http://www.atremic.com/login")
-        return response.text, 200
+        return {"response": response.text}, 200
     except:
-        return "INTERNAL SERVER ERROR", 500
+        return {"response": "INTERNAL SERVER ERROR"}, 500
 docs.register(external_test)
     
 # CONNECTION TO ANOTHER MICROSERVICE - AUTHENTICATION MS
@@ -72,9 +72,9 @@ def login():
         url = 'http://' + database_core_service + '/dblogin'
         response = requests.post(url, data=login_data)
         access_token = response.text
-        return response.text, 200
+        return {"response": response.text}, 200
     except:
-        return "UNAUTHORIZED", 401
+        return {"response": "UNAUTHORIZED"}, 401
 docs.register(login)
 
 # EXECUTION OF A GAME COMMAND - MOCKUP
@@ -109,8 +109,8 @@ def game_command():
             response = requests.post("http://www.atremic.com/join", data={"gameCode": "9328"})
         except:
             response = "200 OK"
-        return "You have successfully joined the game.", 200
-    return "401 UNAUTHORIZED", 401
+        return {"response": "You have successfully joined the game."}, 200
+    return {"response": "401 UNAUTHORIZED"}, 401
 docs.register(game_command)
 
 # SERVICE IP UPDATE FUNCTION
@@ -131,9 +131,9 @@ def update_ip():
     try:
         url = 'http://' + configuration_core_service + '/cfupdate'
         response = requests.post(url, data=data)
-        return response.text, 200
+        return {"response": response.text}, 200
     except:
-        return "Something went wrong.", 500
+        return {"response": "Something went wrong."}, 500
 docs.register(update_ip)
 
 # FUNCTION TO UPDATE IP'S OF OTHER SERVICES
@@ -155,9 +155,9 @@ def config_update():
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
             configuration_core_service = ms_ip
-        return "200 OK", 200
+        return {"response": "200 OK"}, 200
     except Exception as err:
-        return "Something went wrong.", 500
+        return {"response": "Something went wrong."}, 500
 docs.register(config_update)
 
 # FUNCTION TO GET CURRENT CONFIG
@@ -170,7 +170,7 @@ def get_config():
     global service_name
     print("/lggetconfig accessed")
     
-    return str([database_core_service, configuration_core_service]), 200
+    return {"response": str([database_core_service, configuration_core_service])}, 200
 docs.register(get_config)
 
 # METRICS FUNCTION
@@ -184,7 +184,7 @@ def get_health():
         url = 'http://' + configuration_core_service + '/cfhealthcheck'
         response = requests.get(url)
     except Exception as err:
-        return "METRIC CHECK FAIL: configuration unavailable", 500
+        return {"response": "METRIC CHECK FAIL: configuration unavailable"}, 500
     end = datetime.datetime.now()
     
     start2 = datetime.datetime.now()
@@ -192,7 +192,7 @@ def get_health():
         url = 'http://' + database_core_service + '/dbhealthcheck'
         response = requests.get(url)
     except Exception as err:
-        return "METRIC CHECK FAIL: login service unavailable", 500
+        return {"response": "METRIC CHECK FAIL: login service unavailable"}, 500
     end2 = datetime.datetime.now()
     
     delta1 = end-start
@@ -200,7 +200,7 @@ def get_health():
     delta2 = end2-start2
     lrt = delta2.total_seconds() * 1000
     health = {"metric check": "successful", "configuration response time": crt, "authentication response time": lrt}
-    return str(health), 200
+    return {"response": str(health)}, 200
 docs.register(get_health)
 
 # HEALTH CHECK
@@ -208,5 +208,5 @@ docs.register(get_health)
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def send_health():
     print("/lghealthcheck accessed")
-    return "200 OK", 200
+    return {"response": "200 OK"}, 200
 docs.register(send_health)
