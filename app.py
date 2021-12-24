@@ -18,7 +18,6 @@ app.config.update({
 })
 docs = FlaskApiSpec(app, document_options=False)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 service_name = "ecostreet_core_service"
 service_ip = "34.96.72.77"
 
@@ -32,7 +31,6 @@ class NoneSchema(Schema):
 # HEALTH PAGE
 @app.route("/")
 @marshal_with(NoneSchema, description='200 OK', code=200)
-@cross_origin()
 def health():
     return {"response": "200"}, 200
 docs.register(health)
@@ -40,7 +38,6 @@ docs.register(health)
 # HOME PAGE
 @app.route("/lg")
 @marshal_with(NoneSchema, description='200 OK', code=200)
-@cross_origin()
 def hello_world():
     return {"response": "Login microservice."}, 200
 docs.register(hello_world)
@@ -49,7 +46,6 @@ docs.register(hello_world)
 @app.route("/lgexternal")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='INTERNAL SERVER ERROR', code=500)
-@cross_origin()
 def external_test():
     print("/lgexternal accessed")
     try:
@@ -64,7 +60,6 @@ docs.register(external_test)
 @use_kwargs({'username': fields.Str(), 'password': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='UNAUTHORIZED', code=401)
-@cross_origin()
 def login():
     global database_core_service
     global configuration_core_service
@@ -88,7 +83,6 @@ docs.register(login)
 @use_kwargs({'AccessToken': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='UNAUTHORIZED', code=401)
-@cross_origin()
 def game_command():
     global database_core_service
     global configuration_core_service
@@ -110,7 +104,7 @@ def game_command():
     
     url = 'http://' + database_core_service + '/dbauthenticate'
     response = requests.post(url, data={"AccessToken": access_token})
-    if(response.text == "200 OK"):
+    if(response.status_code == 200):
         # additional functionalities could be implemented
         try:
             response = requests.post("http://www.atremic.com/join", data={"gameCode": "9328"})
@@ -125,7 +119,6 @@ docs.register(game_command)
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong.', code=500)
-@cross_origin()
 def update_ip():
     global database_core_service
     global configuration_core_service
@@ -149,7 +142,6 @@ docs.register(update_ip)
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong', code=500)
-@cross_origin()
 def config_update():
     global database_core_service
     global configuration_core_service
@@ -172,7 +164,6 @@ docs.register(config_update)
 # FUNCTION TO GET CURRENT CONFIG
 @app.route("/lggetconfig")
 @marshal_with(NoneSchema, description='200 OK', code=200)
-@cross_origin()
 def get_config():
     global database_core_service
     global configuration_core_service
@@ -187,7 +178,6 @@ docs.register(get_config)
 @app.route("/lgmetrics")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='METRIC CHECK FAIL', code=500)
-@cross_origin()
 def get_health():
     print("/lgmetrics accessed")
     start = datetime.datetime.now()
@@ -217,7 +207,6 @@ docs.register(get_health)
 # HEALTH CHECK
 @app.route("/lghealthcheck")
 @marshal_with(NoneSchema, description='200 OK', code=200)
-@cross_origin()
 def send_health():
     print("/lghealthcheck accessed")
     return {"response": "200 OK"}, 200
