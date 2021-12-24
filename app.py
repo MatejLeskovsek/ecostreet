@@ -72,7 +72,9 @@ def login():
         url = 'http://' + database_core_service + '/dblogin'
         response = requests.post(url, data=login_data)
         access_token = response.text
-        return {"response": response.text}, 200
+        returning_value = {"response": response.text}
+        returning_value.headers = {'Access-Control-Allow-Origin': '*'}
+        return returning_value, 200
     except:
         return {"response": "UNAUTHORIZED"}, 401
 docs.register(login)
