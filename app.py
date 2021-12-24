@@ -14,44 +14,44 @@ configuration_core_service = "34.141.19.56:5000"
 access_token = "None"
 
 # HOME PAGE
-@app.route("/")
+@app.route("/lg")
 def hello_world():
     return "Login microservice."
 
 # EXTERNAL API CONNECTION
-@app.route("/external")
+@app.route("/lgexternal")
 def external_test():
-    print("/external accessed")
+    print("/lgexternal accessed")
     response = requests.get("http://www.atremic.com/login")
     return response.text
     
 # CONNECTION TO ANOTHER MICROSERVICE - AUTHENTICATION MS
-@app.route('/login', methods = ['POST'])
+@app.route('/lglogin', methods = ['POST'])
 def login():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
     global access_token
-    print("/login accessed")
+    print("/lglogin accessed")
     
     login_data = request.form
-    url = 'http://' + database_core_service + '/login'
+    url = 'http://' + database_core_service + '/dblogin'
     response = requests.post(url, data=login_data)
     access_token = response.text
     return response.text
 
 # EXECUTION OF A GAME COMMAND - MOCKUP
-@app.route("/command", methods=["POST"])
+@app.route("/lgcommand", methods=["POST"])
 def game_command():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
     global access_token
-    print("/command accessed")
+    print("/lgcommand accessed")
     
-    url = 'http://' + database_core_service + '/authenticate'
+    url = 'http://' + database_core_service + '/dbauthenticate'
     response = requests.post(url, data={"AccessToken": access_token})
     if(response.text == "200 OK"):
         # additional functionalities could be implemented
@@ -63,7 +63,7 @@ def game_command():
     return "401 UNAUTHORIZED"
 
 # SERVICE IP UPDATE FUNCTION
-@app.route("/update_ip", methods = ['POST'])
+@app.route("/lgupdate_ip", methods = ['POST'])
 def update_ip():
     global database_core_service
     global configuration_core_service
@@ -74,18 +74,18 @@ def update_ip():
     
     service_ip = request.form["ip"]
     data = {"name": service_name, "ip": service_ip}
-    url = 'http://' + configuration_core_service + '/update'
+    url = 'http://' + configuration_core_service + '/cfupdate'
     response = requests.post(url, data=data)
     return response.text
 
 # FUNCTION TO UPDATE IP'S OF OTHER SERVICES
-@app.route("/config", methods = ['POST'])
+@app.route("/lgconfig", methods = ['POST'])
 def config_update():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
-    print("/config accessed")
+    print("/lgconfig accessed")
     
     try:
         microservice = request.form["name"]
@@ -99,23 +99,23 @@ def config_update():
         return err
 
 # FUNCTION TO GET CURRENT CONFIG
-@app.route("/getconfig")
+@app.route("/lggetconfig")
 def get_config():
     global database_core_service
     global configuration_core_service
     global service_ip
     global service_name
-    print("/getconfig accessed")
+    print("/lggetconfig accessed")
     
     return str([database_core_service, configuration_core_service])
 
 # METRICS FUNCTION
-@app.route("/metrics")
+@app.route("/lgmetrics")
 def get_health():
-    print("/metrics accessed")
+    print("/lgmetrics accessed")
     start = datetime.datetime.now()
     try:
-        url = 'http://' + configuration_core_service + '/healthcheck'
+        url = 'http://' + configuration_core_service + '/cfhealthcheck'
         response = requests.get(url)
     except Exception as err:
         return "METRIC CHECK FAIL: configuration unavailable"
@@ -123,7 +123,7 @@ def get_health():
     
     start2 = datetime.datetime.now()
     try:
-        url = 'http://' + database_core_service + '/healthcheck'
+        url = 'http://' + database_core_service + '/dbhealthcheck'
         response = requests.get(url)
     except Exception as err:
         return "METRIC CHECK FAIL: login service unavailable"
@@ -137,7 +137,7 @@ def get_health():
     return str(health)
 
 # HEALTH CHECK
-@app.route("/healthcheck")
+@app.route("/lghealthcheck")
 def send_health():
-    print("/healthcheck accessed")
+    print("/lghealthcheck accessed")
     return "200 OK"
