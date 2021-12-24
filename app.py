@@ -72,9 +72,7 @@ def login():
         url = 'http://' + database_core_service + '/dblogin'
         response = requests.post(url, data=login_data)
         access_token = response.text
-        returning_value = {"response": response.text}
-        returning_value.headers = {'Access-Control-Allow-Origin': '*', 'content-type': 'application/json'}
-        return returning_value, 200
+        return {"response": response.text}, 200
     except Exception as err:
         return {"response": str(err)}, 401
 docs.register(login)
