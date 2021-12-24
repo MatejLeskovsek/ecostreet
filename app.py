@@ -73,7 +73,7 @@ def login():
         response = requests.post(url, data=login_data)
         access_token = response.text
         returning_value = {"response": response.text}
-        returning_value.headers = {'Access-Control-Allow-Origin': '*'}
+        returning_value.headers = {'Access-Control-Allow-Origin': '*', 'content-type': 'application/json'}
         return returning_value, 200
     except:
         return {"response": "UNAUTHORIZED"}, 401
