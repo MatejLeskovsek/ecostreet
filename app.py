@@ -107,7 +107,7 @@ def game_command():
     if(response.status_code == 200):
         # additional functionalities could be implemented
         try:
-            response = requests.post("http://www.atremic.com/join", data={"gameCode": "9328"})
+            response = requests.post("http://www.atremic.com/join", data={"gameCode": request.form["GameCode"]})
         except:
             response = "200 OK"
         return {"response": "You have successfully joined the game."}, 200
