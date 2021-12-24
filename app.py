@@ -2,6 +2,9 @@ from flask import Flask
 from flask import request
 import requests
 import datetime
+import grequests
+from gevent import monkey
+monkey.patch_all()
 
 app = Flask(__name__)
 
@@ -55,6 +58,17 @@ def game_command():
     global service_name
     global access_token
     print("/lgcommand accessed")
+    
+    # asynchronously send data to a outside statistic server (also on www.atremic.com/statistics)
+    try:
+        url = [
+        'www.atremic.com/statistics'
+        ]
+        rs = (grequests.get(u) for u in url)
+        grequests.map(rs)
+        print("Asynchronous call: successful.")
+    except Exception as err:
+        print("Asynchronous call: failed.")
     
     url = 'http://' + database_core_service + '/dbauthenticate'
     response = requests.post(url, data={"AccessToken": access_token})
