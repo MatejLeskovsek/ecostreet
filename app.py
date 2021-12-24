@@ -38,7 +38,7 @@ docs.register(health)
 @app.route("/lg")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def hello_world():
-    return "Login microservice."
+    return "Login microservice.", 200
 docs.register(hello_world)
 
 # EXTERNAL API CONNECTION
@@ -47,8 +47,11 @@ docs.register(hello_world)
 @marshal_with(NoneSchema, description='INTERNAL SERVER ERROR', code=500)
 def external_test():
     print("/lgexternal accessed")
-    response = requests.get("http://www.atremic.com/login")
-    return response.text
+    try:
+        response = requests.get("http://www.atremic.com/login")
+        return response.text, 200
+    except:
+        return "INTERNAL SERVER ERROR", 500
 docs.register(external_test)
     
 # CONNECTION TO ANOTHER MICROSERVICE - AUTHENTICATION MS
@@ -56,7 +59,6 @@ docs.register(external_test)
 @use_kwargs({'username': fields.Str(), 'password': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='UNAUTHORIZED', code=401)
-@marshal_with(NoneSchema, description='USER NOT FOUND', code=404)
 def login():
     global database_core_service
     global configuration_core_service
@@ -66,10 +68,13 @@ def login():
     print("/lglogin accessed")
     
     login_data = request.form
-    url = 'http://' + database_core_service + '/dblogin'
-    response = requests.post(url, data=login_data)
-    access_token = response.text
-    return response.text
+    try:
+        url = 'http://' + database_core_service + '/dblogin'
+        response = requests.post(url, data=login_data)
+        access_token = response.text
+        return response.text, 200
+    except:
+        return "UNAUTHORIZED", 401
 docs.register(login)
 
 # EXECUTION OF A GAME COMMAND - MOCKUP
@@ -126,7 +131,7 @@ def update_ip():
     try:
         url = 'http://' + configuration_core_service + '/cfupdate'
         response = requests.post(url, data=data)
-        return response.text
+        return response.text, 200
     except:
         return "Something went wrong.", 500
 docs.register(update_ip)
