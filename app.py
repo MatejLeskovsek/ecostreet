@@ -103,7 +103,7 @@ def game_command():
         print("Asynchronous call: failed.")
     
     url = 'http://' + database_core_service + '/dbauthenticate'
-    response = requests.post(url, data={"AccessToken": access_token})
+    response = requests.post(url, data={"AccessToken": request.form["AccessToken"]})
     if(response.status_code == 200):
         # additional functionalities could be implemented
         try:
