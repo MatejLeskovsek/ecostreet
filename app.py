@@ -111,7 +111,7 @@ def game_command():
         except:
             response = "200 OK"
         return {"response": "You have successfully joined the game."}, 200
-    return {"response": str(response.status_code)}, 401
+    return {"response": str(response.text)}, 401
 docs.register(game_command)
 
 # SERVICE IP UPDATE FUNCTION
