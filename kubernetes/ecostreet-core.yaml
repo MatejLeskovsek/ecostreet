@@ -220,7 +220,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    test: ecostreet-core
+    test: liveness
   name: readiness-exec-lg
 spec:
   containers:
@@ -242,7 +242,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    test: ecostreet-core
+    test: liveness
   name: liveness-exec-lg
 spec:
   containers:
