@@ -31,7 +31,7 @@ class NoneSchema(Schema):
 @app.route("/")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def health():
-    return "200"
+    return "200", 200
 docs.register(health)
 
 # HOME PAGE
