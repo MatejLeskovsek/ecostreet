@@ -13,6 +13,11 @@ configuration_core_service = "34.141.19.56:5000"
 
 access_token = "None"
 
+# HEALTH PAGE
+@app.route("/")
+def health():
+    return 200
+
 # HOME PAGE
 @app.route("/lg")
 def hello_world():
