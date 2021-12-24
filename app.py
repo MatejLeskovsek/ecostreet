@@ -75,8 +75,8 @@ def login():
         returning_value = {"response": response.text}
         returning_value.headers = {'Access-Control-Allow-Origin': '*', 'content-type': 'application/json'}
         return returning_value, 200
-    except:
-        return {"response": "UNAUTHORIZED"}, 401
+    except Exception as err:
+        return {"response": str(err)}, 401
 docs.register(login)
 
 # EXECUTION OF A GAME COMMAND - MOCKUP
