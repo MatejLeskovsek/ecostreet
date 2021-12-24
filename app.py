@@ -44,7 +44,7 @@ def login():
     print("/lglogin accessed")
     
     login_data = request.form
-    url = 'http://database-core/dblogin'
+    url = 'http://' + database_core_service + '/dblogin'
     response = requests.post(url, data=login_data)
     access_token = response.text
     return response.text
