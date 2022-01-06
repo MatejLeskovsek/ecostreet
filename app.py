@@ -209,5 +209,12 @@ docs.register(get_health)
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def send_health():
     print("/lghealthcheck accessed")
+    try:
+        url = 'http://' + database_core_service + '/dbhealthcheck'
+        response = requests.get(url)
+        url = 'http://' + configuration_core_service + '/cfhealthcheck'
+        response = requests.get(url)
+    except Exception as err:
+        return {"response": "Healthcheck fail: depending services unavailable"}, 500
     return {"response": "200 OK"}, 200
 docs.register(send_health)
