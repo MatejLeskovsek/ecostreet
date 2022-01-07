@@ -41,19 +41,6 @@ docs.register(health)
 def hello_world():
     return {"response": "Login microservice."}, 200
 docs.register(hello_world)
-
-# EXTERNAL API CONNECTION
-@app.route("/lgexternal")
-@marshal_with(NoneSchema, description='200 OK', code=200)
-@marshal_with(NoneSchema, description='INTERNAL SERVER ERROR', code=500)
-def external_test():
-    print("/lgexternal accessed")
-    try:
-        response = requests.get("http://www.atremic.com/test")
-        return {"response": response.text}, 200
-    except:
-        return {"response": "INTERNAL SERVER ERROR"}, 500
-docs.register(external_test)
     
 # CONNECTION TO ANOTHER MICROSERVICE - AUTHENTICATION MS
 @app.route('/lglogin', methods = ['POST'])

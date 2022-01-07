@@ -172,8 +172,8 @@ metadata:
   annotations:
     cloud.google.com/neg: '{"ingress":true}'
   labels:
-    app: login-core
-  name: login-core-service
+    app: ecostreet-core
+  name: ecostreet-core-service
   namespace: ecostreet
 spec:
   externalTrafficPolicy: Cluster
@@ -182,6 +182,6 @@ spec:
       protocol: TCP
       targetPort: 5000
   selector:
-    app: login-core
+    app: ecostreet-core
   sessionAffinity: None
   type: NodePort
