@@ -197,9 +197,9 @@ docs.register(get_health)
 def send_health():
     print("/lghealthcheck accessed")
     try:
-        url = 'http://' + database_core_service + '/dbhealthcheck'
+        url = 'http://' + database_core_service + '/db'
         response = requests.get(url)
-        url = 'http://' + configuration_core_service + '/cfhealthcheck'
+        url = 'http://' + configuration_core_service + '/cf'
         response = requests.get(url)
     except Exception as err:
         return {"response": "Healthcheck fail: depending services unavailable"}, 500
