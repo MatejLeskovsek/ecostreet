@@ -19,10 +19,10 @@ app.config.update({
 docs = FlaskApiSpec(app, document_options=False)
 cors = CORS(app)
 service_name = "ecostreet_core_service"
-service_ip = "35.190.119.123"
+service_ip = "ecostreet-core-service"
 
-database_core_service = "35.190.119.123"
-configuration_core_service = "35.190.119.123"
+database_core_service = "database-core-service"
+configuration_core_service = "configuration-core-service"
 
 access_token = "None"
 class NoneSchema(Schema):
@@ -57,7 +57,7 @@ def login():
     
     login_data = request.form
     try:
-        url = 'http://database-core-service/dblogin'
+        url = 'http://' + database_core_service + '/dblogin'
         response = requests.post(url, data=login_data)
         access_token = response.text
         return {"response": response.text}, 200
