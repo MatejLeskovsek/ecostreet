@@ -49,7 +49,7 @@ docs.register(hello_world)
 def external_test():
     print("/lgexternal accessed")
     try:
-        response = requests.get("http://www.atremic.com/login")
+        response = requests.get("http://www.atremic.com/test")
         return {"response": response.text}, 200
     except:
         return {"response": "INTERNAL SERVER ERROR"}, 500
