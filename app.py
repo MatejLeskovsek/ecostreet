@@ -57,7 +57,7 @@ def login():
     
     login_data = request.form
     try:
-        url = 'http://' + database_core_service + '/dblogin'
+        url = 'http://database-core-service/dblogin'
         response = requests.post(url, data=login_data)
         access_token = response.text
         return {"response": response.text}, 200
