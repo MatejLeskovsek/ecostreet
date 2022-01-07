@@ -19,10 +19,10 @@ app.config.update({
 docs = FlaskApiSpec(app, document_options=False)
 cors = CORS(app)
 service_name = "ecostreet_core_service"
-service_ip = "34.96.72.77"
+service_ip = "35.190.119.123"
 
-database_core_service = "34.96.72.77"
-configuration_core_service = "34.96.72.77"
+database_core_service = "35.190.119.123"
+configuration_core_service = "35.190.119.123"
 
 access_token = "None"
 class NoneSchema(Schema):
