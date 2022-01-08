@@ -139,26 +139,26 @@ docs.register(update_ip)
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong', code=500)
 def config_update():
-    global database_core_service
-    global configuration_core_service
     global play_core_service
+    global configuration_core_service
+    global database_core_service
     global admin_core_service
     global service_ip
     global service_name
+    
     sys.stdout.write("Login microservice: /lgconfig accessed\n")
     
     try:
         microservice = str(request.form["name"])
         ms_ip = request.form["ip"]
-        if microservice == str("database_core_service"):
+        if microservice == "database_core_service":
             database_core_service = ms_ip
-            return {"response": database_core_service}, 200
-        if microservice == "configuration_core_service":
-            configuration_core_service = ms_ip
         if microservice == "play_core_service":
             play_core_service = ms_ip
         if microservice == "admin_core_service":
             admin_core_service = ms_ip
+        if microservice == "configuration_core_service":
+            configuration_core_service = ms_ip
         return {"response": "200 OK"}, 200
     except Exception as err:
         return {"response": "Something went wrong."}, 500
