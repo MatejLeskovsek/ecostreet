@@ -152,13 +152,14 @@ def config_update():
         ms_ip = request.form["ip"]
         if microservice == "database_core_service":
             database_core_service = ms_ip
+            return {"response": database_core_service}, 200
         if microservice == "configuration_core_service":
             configuration_core_service = ms_ip
         if microservice == "play_core_service":
             play_core_service = ms_ip
         if microservice == "admin_core_service":
             admin_core_service = ms_ip
-        return {"response": database_core_service}, 200
+        return {"response": "200 OK"}, 200
     except Exception as err:
         return {"response": "Something went wrong."}, 500
 docs.register(config_update)
