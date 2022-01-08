@@ -149,7 +149,7 @@ def config_update():
     
     try:
         microservice = str(request.form["name"])
-        ms_ip = str(request.form["ip"])
+        ms_ip = request.form["ip"]
         if microservice == "database_core_service":
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
