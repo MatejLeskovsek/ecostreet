@@ -24,6 +24,8 @@ service_ip = "ecostreet-core-service"
 
 database_core_service = "database-core-service"
 configuration_core_service = "configuration-core-service"
+play_core_service = "play-core-service"
+admin_core_service = "admin-core-service"
 
 access_token = "None"
 class NoneSchema(Schema):
@@ -139,6 +141,8 @@ docs.register(update_ip)
 def config_update():
     global database_core_service
     global configuration_core_service
+    global play_core_service
+    global admin_core_service
     global service_ip
     global service_name
     sys.stdout.write("Login microservice: /lgconfig accessed\n")
@@ -150,6 +154,10 @@ def config_update():
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
             configuration_core_service = ms_ip
+        if microservice == "play_core_service":
+            play_core_service = ms_ip
+        if microservice == "admin_core_service":
+            admin_core_service = ms_ip
         return {"response": "200 OK"}, 200
     except Exception as err:
         return {"response": "Something went wrong."}, 500
