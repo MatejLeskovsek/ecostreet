@@ -87,7 +87,7 @@ def game_command():
     global access_token
     sys.stdout.write("Login microservice: /lgcommand accessed\n")
     
-    # asynchronously send data to a outside statistic server (also on www.atremic.com/statistics)
+    # asynchronously send connection call to an outside statistic server (also on www.atremic.com/statistics)
     try:
         url = [
         'www.atremic.com/statistics'
@@ -148,8 +148,8 @@ def config_update():
     sys.stdout.write("Login microservice: /lgconfig accessed\n")
     
     try:
-        microservice = request.form["name"]
-        ms_ip = request.form["ip"]
+        microservice = str(request.form["name"])
+        ms_ip = str(request.form["ip"])
         if microservice == "database_core_service":
             database_core_service = ms_ip
         if microservice == "configuration_core_service":
@@ -169,11 +169,13 @@ docs.register(config_update)
 def get_config():
     global database_core_service
     global configuration_core_service
+    global play_core_service
+    global admin_core_service
     global service_ip
     global service_name
     sys.stdout.write("Login microservice: /lggetconfig accessed\n")
     
-    return {"response": str([database_core_service, configuration_core_service])}, 200
+    return {"response": str([database_core_service, configuration_core_service, play_core_service, admin_core_service])}, 200
 docs.register(get_config)
 
 # METRICS FUNCTION
