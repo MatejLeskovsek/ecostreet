@@ -158,7 +158,7 @@ def config_update():
             play_core_service = ms_ip
         if microservice == "admin_core_service":
             admin_core_service = ms_ip
-        return {"response": "200 OK"}, 200
+        return {"response": database_core_service}, 200
     except Exception as err:
         return {"response": "Something went wrong."}, 500
 docs.register(config_update)
