@@ -9,6 +9,7 @@ from flask_apispec import use_kwargs, marshal_with
 from flask_apispec import FlaskApiSpec
 from marshmallow import Schema
 from flask_cors import CORS, cross_origin
+import sys
 monkey.patch_all()
 
 app = Flask(__name__)
@@ -53,7 +54,7 @@ def login():
     global service_ip
     global service_name
     global access_token
-    print("/lglogin accessed")
+    sys.stdout.write("Login microservice: /lglogin accessed\n")
     
     login_data = request.form
     try:
@@ -76,7 +77,7 @@ def game_command():
     global service_ip
     global service_name
     global access_token
-    print("/lgcommand accessed")
+    sys.stdout.write("Login microservice: /lgcommand accessed\n")
     
     # asynchronously send data to a outside statistic server (also on www.atremic.com/statistics)
     try:
@@ -111,7 +112,7 @@ def update_ip():
     global configuration_core_service
     global service_ip
     global service_name
-    print("/update_ip accessed")
+    sys.stdout.write("Login microservice: /lgupdate_ip accessed\n")
     
     
     service_ip = request.form["ip"]
@@ -134,7 +135,7 @@ def config_update():
     global configuration_core_service
     global service_ip
     global service_name
-    print("/lgconfig accessed")
+    sys.stdout.write("Login microservice: /lgconfig accessed\n")
     
     try:
         microservice = request.form["name"]
@@ -156,7 +157,7 @@ def get_config():
     global configuration_core_service
     global service_ip
     global service_name
-    print("/lggetconfig accessed")
+    sys.stdout.write("Login microservice: /lggetconfig accessed\n")
     
     return {"response": str([database_core_service, configuration_core_service])}, 200
 docs.register(get_config)
@@ -166,7 +167,7 @@ docs.register(get_config)
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='METRIC CHECK FAIL', code=500)
 def get_health():
-    print("/lgmetrics accessed")
+    sys.stdout.write("Login microservice: /lgmetrics accessed\n")
     start = datetime.datetime.now()
     try:
         url = 'http://' + configuration_core_service + '/cfhealthcheck'
@@ -195,7 +196,7 @@ docs.register(get_health)
 @app.route("/lghealthcheck")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 def send_health():
-    print("/lghealthcheck accessed")
+    sys.stdout.write("Login microservice: /lghealthcheck accessed\n")
     try:
         url = 'http://' + database_core_service + '/db'
         response = requests.get(url)
