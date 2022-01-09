@@ -13,6 +13,7 @@ import sys
 import logging
 import socket
 from logging.handlers import SysLogHandler
+from circuitbreaker import circuit
 monkey.patch_all()
 
 app = Flask(__name__)
@@ -58,6 +59,7 @@ def not_found(e):
 # HEALTH PAGE
 @app.route("/")
 @marshal_with(NoneSchema, description='200 OK', code=200)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def health():
     return {"response": "200"}, 200
 docs.register(health)
@@ -65,6 +67,7 @@ docs.register(health)
 # HOME PAGE
 @app.route("/lg")
 @marshal_with(NoneSchema, description='200 OK', code=200)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def hello_world():
     return {"response": "Login microservice."}, 200
 docs.register(hello_world)
@@ -74,6 +77,7 @@ docs.register(hello_world)
 @use_kwargs({'username': fields.Str(), 'password': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='UNAUTHORIZED', code=401)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def login():
     global database_core_service
     global configuration_core_service
@@ -99,6 +103,7 @@ docs.register(login)
 @use_kwargs({'AccessToken': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='UNAUTHORIZED', code=401)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def game_command():
     global database_core_service
     global configuration_core_service
@@ -138,6 +143,7 @@ docs.register(game_command)
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong.', code=500)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def update_ip():
     global database_core_service
     global configuration_core_service
@@ -163,6 +169,7 @@ docs.register(update_ip)
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong', code=500)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def config_update():
     global play_core_service
     global configuration_core_service
@@ -193,6 +200,7 @@ docs.register(config_update)
 # FUNCTION TO GET CURRENT CONFIG
 @app.route("/lggetconfig")
 @marshal_with(NoneSchema, description='200 OK', code=200)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def get_config():
     global database_core_service
     global configuration_core_service
@@ -210,6 +218,7 @@ docs.register(get_config)
 @app.route("/lgmetrics")
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='METRIC CHECK FAIL', code=500)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def get_health():
     logger.info("Login microservice: /lgmetrics accessed\n")
     start = datetime.datetime.now()
@@ -243,6 +252,7 @@ docs.register(get_health)
 # HEALTH CHECK
 @app.route("/lghealthcheck")
 @marshal_with(NoneSchema, description='200 OK', code=200)
+@circuit(failure_threshold=1, recovery_timeout=10, fallback_function=not_found("circuit_break"))
 def send_health():
     logger.info("Login microservice: /lghealthcheck accessed\n")
     try:
