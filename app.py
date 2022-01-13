@@ -156,7 +156,7 @@ def update_ip():
     data = {"name": service_name, "ip": service_ip}
     try:
         url = 'http://' + configuration_core_service + '/cfupdate'
-        response = requests.post(url, data=data)
+        response = requests.put(url, data=data)
         logger.info("Login microservice: /lgupdate_ip finished\n")
         return {"response": response.text}, 200
     except:
