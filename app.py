@@ -139,7 +139,7 @@ def game_command():
 docs.register(game_command)
 
 # SERVICE IP UPDATE FUNCTION
-@app.route("/lgupdate_ip", methods = ['POST'])
+@app.route("/lgupdate_ip", methods = ['PUT'])
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong.', code=500)
@@ -165,7 +165,7 @@ def update_ip():
 docs.register(update_ip)
 
 # FUNCTION TO UPDATE IP'S OF OTHER SERVICES
-@app.route("/lgconfig", methods = ['POST'])
+@app.route("/lgconfig", methods = ['PUT'])
 @use_kwargs({'name': fields.Str(), 'ip': fields.Str()})
 @marshal_with(NoneSchema, description='200 OK', code=200)
 @marshal_with(NoneSchema, description='Something went wrong', code=500)
